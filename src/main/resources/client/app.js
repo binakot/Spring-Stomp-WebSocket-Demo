@@ -17,8 +17,13 @@ function connect() {
   stompClient.connect({}, function (frame) {
     setConnected(true);
     console.log('Connected: ' + frame);
+
+    stompClient.subscribe('/app/status/1337', function (message) {
+      showMessage(JSON.stringify(JSON.parse(message.body)));
+    });
+
     stompClient.subscribe('/topic/status/1337', function (message) {
-      showMessage(message);
+      showMessage(JSON.stringify(JSON.parse(message.body)));
     });
   });
 }

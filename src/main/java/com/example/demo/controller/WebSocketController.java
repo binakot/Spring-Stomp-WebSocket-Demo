@@ -1,27 +1,25 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Status;
+import com.example.demo.service.StatusService;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class WebSocketController {
 
-    private final SimpMessagingTemplate template;
+    private final StatusService statusService;
 
-    public WebSocketController(final SimpMessagingTemplate template) {
-        this.template = template;
+    public WebSocketController(final StatusService statusService) {
+        this.statusService = statusService;
     }
 
-    @MessageMapping("/status/{id}")
-    public void subscribe(final @DestinationVariable Integer id) {
-        System.out.println(id);
-    }
+    @SubscribeMapping("/status/{id}")
+    public Status subscribe(final @DestinationVariable Integer id) {
+        System.out.printf("NEW SUBSCRIPTION WITH ID: %d\r\n", id);
 
-    @Scheduled(fixedDelay = 10_000L)
-    public void publish() {
-        template.convertAndSend("/topic/status/1337", "OLOLO");
+        statusService.registerSubscriptionById(id);
+        return Status.of(id);
     }
 }
