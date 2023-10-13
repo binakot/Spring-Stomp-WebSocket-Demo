@@ -24,6 +24,10 @@ Run:
 $ ./gradlew bootRun
 ```
 
+Now open web client in browser [index.html](./src/main/resources/client/index.html).
+
 Demo on YouTube: 
 [Video 1](https://youtu.be/8XuXF_w1QM4) and 
 [Video 2](https://youtu.be/IvgJADQAVZ0).
+
+![ws](./assets/ws.png)
